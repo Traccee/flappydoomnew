@@ -19,7 +19,7 @@ let DoomPipesX = canvasWidth; // starts the pipes at tthe end of the screen
 let DoomPipesY = 0; // vert starting position
 
 let TopDoomPipeImg; 
-let BottomDoomPipeImg; 
+let BottomDoomPipeImg;  
 
 let Caco = { //cacodemon object setup , used for easier reference rahter than using each individual property
     x: CacoX,
@@ -55,7 +55,7 @@ window.onload = function() { //Runs the enclosed function after the page loads.
         ctx.drawImage(CacoImg, Caco.x, Caco.y, Caco.width, Caco.height);
     } 
 
-    // Load pipe images
+    // load pipe images
     TopDoomPipeImg = new Image(); //image object 
     TopDoomPipeImg.src = "./TOPPIPE.png"; // Ensure the correct image path
     BottomDoomPipeImg = new Image();
@@ -67,53 +67,53 @@ window.onload = function() { //Runs the enclosed function after the page loads.
 
     // Start the game loop and spawn pipes every 1.6 seconds
     requestAnimationFrame(update); //Starts the game loop, which repeatedly calls the update function to refresh the game every frame.
-    setInterval(spawnDoomPipes, 1200); // Spawn pipes every 1.6 seconds by calling function 
+    setInterval(spawnDoomPipes, 1200); // spawn pipes every 1.6 seconds by calling function 
     document.addEventListener("keydown", controlPlayer); // event listener for key presses
 }
 
-// Game Loop to update every frame
+// game loop
 function update() {
-    requestAnimationFrame(update); // Keep the animation going
+    requestAnimationFrame(update); 
     if (isGameOver) {
         return; // Stop if the game is over
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
 
-    // Gradually increase the pipe speed, but cap it at maxPipeSpeed
+    //  increase the pipe speed and cap it once reached max speed 
     if (horizontalSpeed > maxPipeSpeed) {
         horizontalSpeed += speedIncreaseRate; // Increase speed over time
     }
 
-    // Player (Cacodemon) movement
-    verticalSpeed += gravityForce; // Apply gravity to vertical speed
+    // Cacodemon movement
+    verticalSpeed += gravityForce; // apply gravity to vertical speed
     Caco.y = Math.max(Caco.y + verticalSpeed, 0); // Ensure the player doesn't go off the top of the screen
-    ctx.drawImage(CacoImg, Caco.x, Caco.y, Caco.width, Caco.height); // Draw the player
+    ctx.drawImage(CacoImg, Caco.x, Caco.y, Caco.width, Caco.height); // draw the player
 
     if (Caco.y > canvas.height) {
         isGameOver = true; // Game over if the player goes below the screen
     }
 
-    // Pipes movement and collision detection
+    // pipes movement and collision detection
     for (let i = 0; i < DoomPipes.length; i++) {
         let pipe = DoomPipes[i];
         pipe.x += horizontalSpeed; // Move pipes to the left
         ctx.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height); // Draw each pipe
 
-        // Update score if the player passed the pipe
+        // Update score if the caco passed the pipe
         if (!pipe.passed && Caco.x > pipe.x + pipe.width) {
             gameScore += 0.5; // Each pair of pipes contributes 0.5 points to the score
             pipe.passed = true;
         }
 
-        // Check for collision between the player and the pipe
+        // checks collision between the caco and the pipe
         if (checkCollision(Caco, pipe)) {
-            isGameOver = true; // End the game if a collision occurs
+            isGameOver = true; // end the game when a collision happens
         }
     }
 
     // Remove pipes that are off-screen
-    while (DoomPipes.length > 0 && DoomPipes[0].x < -DoomPipesWidth) {
-        DoomPipes.shift(); // Remove the first pipe from the array
+    while (DoomPipes.length > 0 && DoomPipes[0].x < -DoomPipesWidth) { // remove the first pipe from the array
+        DoomPipes.shift(); 
     }
 
     // Display the score
@@ -160,25 +160,25 @@ function spawnDoomPipes() {
     DoomPipes.push(bottomPipe);
 }
 
-// Control the player's movement (jump)
+// make caco jump 
 function controlPlayer(e) {
     if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX") {
-        verticalSpeed = -4; // Make the player jump upwards
+        verticalSpeed = -2.5; // Make the player jump upwards
 
-        // Reset the game if it's over
+        // reset the game back to defaulsts
         if (isGameOver) {
-            Caco.y = CacoY; // Reset player to initial position
-            DoomPipes = []; // Clear the pipes
-            gameScore = 0; // Reset the score
-            isGameOver = false; // Restart the game
+            Caco.y = CacoY; // Reset caco to og position 
+            DoomPipes = []; // clear pipes
+            gameScore = 0; // Reset score
+            isGameOver = false; // restart game
         }
     }
 }
 
-// Check for collision between two objects (player and pipes)
+// Check for collision between two objects 
 function checkCollision(a, b) {
-    return a.x < b.x + b.width &&   // Check if the player's top left doesn't reach the pipe's top right
-           a.x + a.width > b.x &&   // Check if the player's top right passes the pipe's top left
-           a.y < b.y + b.height &&  // Check if the player's top left doesn't reach the pipe's bottom left
-           a.y + a.height > b.y;    // Check if the player's bottom left passes the pipe's top left
+    return a.x < b.x + b.width &&   // chekk if the player's top left doesn't reach the pipe's top right
+           a.x + a.width > b.x &&   // check if the player's top right passes the pipe's top left
+           a.y < b.y + b.height &&  // chck if the player's top left doesn't reach the pipe's bottom left
+           a.y + a.height > b.y;    // check if the player's bottom left passes the pipe's top left
 }

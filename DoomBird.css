@@ -1,16 +1,16 @@
 body {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    background-color: #000; /* Set background color of the body */
+    margin: 0; 
+    padding: 0; 
+    background-color: #000; 
 }
 
 #canvas {
-    display: block; /* Makes the canvas a block-level element */
-    margin: 0 auto; /* Center the canvas horizontally */
-    background-color: skyblue; /* Fallback background color */
-    background-image: url("./doomBG.png"); /* Set the background image for the canvas */
-    background-size: cover; /* Ensures the image covers the entire canvas */
-    background-position: center; /* Centers the background image */
+    display: block; 
+    margin: 0 auto; 
+    background-color: skyblue; 
+    background-image: url("./doomBG.png"); 
+    background-size: cover; 
+    background-position: center; 
 }
